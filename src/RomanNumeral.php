@@ -27,8 +27,27 @@ class RomanNumeral
      */
     public function toInt():int
     {
+        $romanNumber = str_split($this->numeral); //parse into chars
+        
         $total = 0;
+        
+        for ($counter = 0; $counter < sizeof($romanNumber); $counter++) {
+        	$currentValue = array_search($romanNumber[$counter],$this->symbols);
+        	
+        	if ($currentValue == false) throw new InvalidNumeral(); //throw exception if an invalid char is encountered
+        	
+        	$nextValue = ($counter+1 < sizeof($romanNumber))?array_search($romanNumber[$counter+1],$this->symbols):0;
+        	
+        	if ($nextValue > $currentValue) {
+        		$total += $nextValue - $currentValue;
+        		$counter++;
+        	} else {
+        		$total += $currentValue;
+        	}
+        	
+        }
 
         return $total;
     }
 }
+?>
